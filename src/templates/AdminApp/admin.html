@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}
+    管理
+{% endblock title %}
+
+{% block body %}
+<div class="layui-container" style="margin-top: 10%">
+
+
+<div class="layui-col-md8">
+
+    <table class="layui-table">
+  <colgroup>
+    <col width="150">
+    <col width="200">
+    <col>
+  </colgroup>
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>title</th>
+
+      <th>分类</th>
+      <th>标签</th>
+        <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+
+  {% for article in articles %}
+    <tr>
+      <td>{{ article.id }}</td>
+      <td>{{ article.title }}</td>
+      <td>{{ article.category.name }}</td>
+    <td>
+        {% for tag in article.tags.all %}
+            <a   style="text-decoration: underline;font-size: 13px;font-family:楷体; color: #4D344A" href="/article/tags/{{ tag.name }}/">{{ tag.name }}</a>
+            {% endfor %}
+    </td>
+    <td>
+        <a href="/article/update/{{ article.id }}/">修改</a>
+        <a href="#">删除</a>
+    </td>
+    </tr>
+   {% endfor %}
+  </tbody>
+</table>
+
+</div>
+
+
+</div>
+
+
+{% endblock body %}
+
+{% block js %}
+
+{% endblock js %}

@@ -1,0 +1,817 @@
+
+{% extends "base.html" %}
+
+{% block keyword %}
+    <meta content="个人网站,博客,Django,SpringBoot,Python,JAVA,后端,个人博客" name="keywords">
+{% endblock %}
+
+{% block title %}
+    biningo的笔记本
+{% endblock %}
+{% block css %}
+<link rel="stylesheet" href="/static/my/css/tag.css">
+<style>
+#topbar {
+	/* height:60px;
+	*/
+    overflow:hidden;
+}
+.rolling-notice {
+	/* margin:18px 0 0 10px;
+	*/
+    float:left;
+}
+.rolling-notice .notice-title {
+	float:left
+}
+.rolling-notice .notice-list {
+	list-style:none;
+	margin:0;
+	padding:0;
+	overflow:hidden;
+	height:1.5em;
+	position:relative;
+	width:50em;
+}
+.rolling-notice .notice-list li {
+	list-style:none;
+	margin:0;
+	padding:0;
+	overflow:hidden;
+	height:1.5em;
+	position:relative;
+}
+</style>
+{% endblock %}
+
+{% block body %}
+<!--Body-->
+<img style="bottom: 80px;height: 70%;position: absolute" src="/static/images/mood10.jpg" >
+
+<div class="layui-row">
+<div  class="content-wrap" style="padding-top: 10px;">
+
+
+
+
+<div class="layui-container">
+
+<!--左边-->
+
+<div style="margin-right: 7%;margin-bottom: 20%;" class="layui-col-md8">
+
+<div class="" style="background-color: white;box-shadow:0px 1px 8px black;border-radius: 20px;height: 30px;padding: 1px;margin-bottom: 5px;">
+<div  style="margin-left: 15px;" class="layui-row">
+
+    <span hidden id="redio-content">
+        {% for broadcast in broadcasts %}
+            <li >{{ broadcast.content }}</li>
+        {% endfor %}
+
+    </span>  <!--放消息-->
+
+
+
+    <div  class="layui-col-xs1" >
+<span   style="font-size: 25px;" class="layui-icon layui-icon-speaker"></span>
+    </div>
+   <div  class="layui-col-xs1 rolling-notice" style="margin-top: 5px;">
+        <ul style="font-family:华文仿宋;font-weight: bolder" class="notice-list"  id="announce"></ul>
+    </div>
+
+  <!--广播-->
+</div> <!--广播-->
+
+</div> <!--广播-->
+    <div>
+
+    <iframe style=";overflow: hidden;margin-left: 6%;margin-bottom: 5px;"  width="500" scrolling="no" height="15" frameborder="0" allowtransparency="true" src="//i.tianqi.com/index.php?c=code&id=11&bgc=%23&icon=1&py=songyang&site=13"></iframe>
+</div>
+<div class="layui-row">
+
+<div class="layui-carousel "  id="test2" style="margin-top: 15px;">
+  <div carousel-item="" >
+
+
+{% for topic in topic_list %}
+
+<div    class="wrap-card" onclick="window.location.href = '/article/topic/{{ topic.id }}/'" style="background-image: url('/static/images/mood7.jpg');color: white">
+					  <div  style="background-image: url('/static/images/mood7.jpg');color: white" class="card" >
+						<h2 class="year">
+						  {{ topic.name }}
+						</h2>
+
+						<p class="company">
+						{{ topic.created_time|date:"Y-m-d" }}
+						</p>
+						<hr>
+						<div >
+						  <p>
+						{{ topic.summary }}
+						  </p>
+						</div>
+
+					  </div>
+</div><!--专栏-->
+      {% endfor %}
+
+
+
+  </div>
+
+
+</div><!--专栏轮播 -->
+
+</div>   <!--轮播-->
+
+<!--分类-->
+<div class="layui-row">
+
+
+      <div id="btns" class="layui-colla-content layui-show">
+       <button style="padding: 3px;padding-bottom: 10px;    " type="button" id='0' onclick="change(this.id)"  class="fly-extend-list layui-btn layui-btn-sm layui-btn-radius">全部</button>
+          {% for category in categories %}
+    <button style="padding: 3px;padding-bottom: 10px; "  onclick="change(this.id)" class="fly-extend-list layui-btn layui-btn-primary layui-btn-sm layui-btn-radius" id={{ category.id }}    >{{ category.name }}({{ category.article_set.count }})</button>
+          {% endfor %}
+
+      </div>
+</div>
+<!--面包 最新 最热 -->
+<div class="layui-container" style="margin-top: 10px;margin-bottom: 10px">
+
+<span class="layui-breadcrumb" id="hot_new"><a href="#" id="new" onclick="Test('new')"><cite>最新</cite></a><a href="#" onclick="Test('hot')">最热</a></span>
+
+
+</div>
+
+<!--博客列表-->
+<div  class="layui-row" style="margin-top: 30px">
+
+    <ul  id="lazy_load" class="flow-default" ></ul>
+
+</div>
+
+
+
+
+
+
+</div>
+
+<!--左边-->
+
+<!--右边-->
+
+<div class="layui-col-md3"  style="margin-left: 10px;">
+
+
+    <blockquote  class="layui-hide-xs layui-elem-quote" style="font-size: small;margin-bottom: 50px">
+  猿强，则国强。国强，则猿更强！
+    </blockquote>
+
+
+<!--公告和用户管理-->
+<div class="layui-row" style="margin-bottom: 10px;clear: both">
+        <div class="layui-card" >
+        <div class="layui-tab">
+  <ul class="layui-tab-title">
+    <li class="layui-this">网站公告</li>
+    <li>用户管理</li>
+
+  </ul>
+  <div class="layui-tab-content">
+    <div class="layui-tab-item layui-show">
+
+     {% for notice in notice_list %}
+        <span class="layui-icon layui-icon-notice"></span>{{ notice.content }}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="layui-badge-rim" style="margin-left: 40%">{{ notice.created_time }}</span><br><br>
+     {% endfor %}
+
+    </div>
+ <div class="layui-tab-item" id="user_home">
+
+    {% if user_account.created_time %}
+
+        昵称:{{ user_account.username }}<br>
+        邮箱:{{ user_account.email }}<br>
+        创建时间:{{ user_account.created_time|date:"Y-m-d" }}<br>
+
+
+
+    {% elif sUser.uid %}
+
+        欢迎您:{{ sUser.uid}}<br>
+        这是您第{{ sUser.access_count }}次访问本站了 谢谢~<br>
+
+        <div id="login_register" style="margin-top: 10px">
+        <button id="register_btn" data-method="offset" data-type="auto" class="register layui-btn  layui-btn-sm layui-btn-normal">注册</button>
+        <button id="login_btn" data-method="offset" data-type="auto" class="login layui-btn  layui-btn-sm layui-btn-normal">登陆</button>
+        </div>
+    {% endif %}
+
+
+
+ </div>
+  </div>
+</div>
+    </div>
+</div>
+<!--公告和用户管理-->
+
+
+
+<div class="layui-row">
+<div class="tab-category">
+                <a href=""><strong>标签</strong></a>
+            </div>
+        <div class="fly-extend-list layui-card" >
+
+{% for tag in tags %}
+   <a href="/article/tags/{{ tag.name }}/"> <span class="layui-badge layui-bg-blue">{{ tag.name }}({{ tag.article_set.count }})</span></a>
+{% endfor %}
+        </div>
+</div><!--标签云-->
+
+<div class="layui-row" style="margin-top: 10px;">
+<div class="tab-category">
+                <a href=""><strong>归档</strong></a>
+            </div>
+        <div  style="width: 80%;padding: 20px;box-shadow:0px 2px 10px #000;margin-left: 2px; color: #fff;" class="layui-card" >
+
+            {% for k in timeArticle_map %}
+<a style="text-decoration: underline" href="/article/detail/{{ k|slice:"4" }}/{{ k|slice:"5:7"}}/0/">{{ k }}({{ k.0 }}篇)</a>
+            {% endfor %}
+
+        </div>
+</div> <!--归档-->
+
+
+<div class="layui-row" style="margin-top: 30px;" >
+<div class="tab-category">
+                <a href=""><strong>关于本站</strong></a>
+            </div>
+        <div  style="width: 80%;padding: 20px;box-shadow:0px 1px 8px #000;margin-left: 2px; color:black;" class="layui-card" >
+
+<ul>
+
+    <li><span class="layui-icon layui-icon-edit"></span>文章数量：{{ article_count }} 篇</li>
+<li><span class="layui-icon layui-icon-note"></span>标签数量：{{ topic_list.count }} 个</li>
+
+    <li><span  class="layui-icon layui-icon-template-1"></span>分类数量：{{ categories.count }} 种</li>
+     <li><span class="layui-icon layui-icon-group"></span>总访问量：{{ access_count }} </li>
+     <li><span class="layui-icon layui-icon-friends"></span>访问人次：{{ access_people_count }} </li>
+    <li><span class="layui-icon layui-icon-user"></span>拥有用户：{{ access_people_count }} </li>
+     <li><span class="layui-icon layui-icon-fonts-code"></span>开发周期：两个月零一天 </li>
+
+    <li><span class="layui-icon layui-icon-fonts-code"></span>最近维护时间:2019-8-30</li>
+
+    <li><span class="layui-icon layui-icon-play"></span>网站运行天数：<br>&nbsp;&nbsp;&nbsp;&nbsp;<span  id="run_time" style="color:forestgreen"></span> </li>
+
+  <script>
+                function runTime() {
+                    var d = new Date(), str = '';
+                    BirthDay = new Date("August 28,2019");
+                    today = new Date();
+                    timeold = (today.getTime() - BirthDay.getTime());
+                    sectimeold = timeold / 1000;
+                    secondsold = Math.floor(sectimeold);
+                    msPerDay = 24 * 60 * 60 * 1000;
+                    msPerYear = 365 * 24 * 60 * 60 * 1000;
+                    e_daysold = timeold / msPerDay;
+                    e_yearsold = timeold / msPerYear;
+                    daysold = Math.floor(e_daysold);
+                    yearsold = Math.floor(e_yearsold);
+                    //str = yearsold + "年";
+                    str += daysold + "天";
+                    str += d.getHours() + '时';
+                    str += d.getMinutes() + '分';
+                    str += d.getSeconds() + '秒';
+                    return str;
+                }
+                setInterval(function () { $('#run_time').html(runTime()) }, 1000);
+            </script>
+
+</ul>
+
+
+
+        </div>
+</div> <!--网站信息-->
+
+
+
+
+</div>
+
+<!--右边-->
+
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+</div>
+
+
+
+
+
+
+    <!--Body-->
+
+
+
+
+{% endblock body %}
+
+{% block js %}
+    <script src="https://libs.baidu.com/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+(function(window) {
+    function mintTabify(el) {
+        var tabs = $(el).find(".nav-tabs li").toArray();
+        var currentTab = tabs[0];
+        var currentPane = document.getElementById(currentTab.getElementsByTagName("a")[0].href.split("#")[1]);
+
+        for (var i = 0, len = tabs.length; i < len; i++) {
+            (function(tab) {
+                var link = tab.getElementsByTagName("a")[0];
+                tab.pane = document.getElementById(link.href.split("#")[1]);
+                link.onclick = function() {
+                    currentTab.className = currentTab.className.replace("active", "");
+                    currentTab = tab;
+                    currentTab.className += " active";
+
+                    currentPane.className = currentPane.className.replace("active", "");
+                    currentPane = currentTab.pane;
+                    currentPane.className += " active";
+                    return false;
+                };
+            })(tabs[i]);
+        };
+    };
+
+    $.fn.mintTabify = function() {
+        return this.each(function() {
+            mintTabify(this);
+        });
+    };
+})(window);
+
+
+var array = new Array();
+var redio = document.getElementById("redio-content").getElementsByTagName("li");
+for(var i=0;i<redio.length;i++)
+{
+array.push({
+    noticeContent: redio[i].innerText.trim()
+});
+}
+
+$(function() {
+    if (array.length == 1) {
+        $("<li class='line-limit-length'>" + array[0].noticeContent + "</li>").appendTo($("#announce"));
+    } else if (array.length > 1) {
+        announceArray();
+        announceNoticeList();
+    }
+
+});
+
+/***
+ * 循环跳动
+ */
+function announceArray() {
+    if (array.length > 0) {
+        for (var i = 0; i < array.length; i++) {
+            $("<li class='line-limit-length'>" + array[i].noticeContent + "</li>").appendTo($("#announce"));
+        }
+    } else {
+        $("<li>暂无消息!</li>").appendTo($("#announce"));
+    }
+}
+
+/***
+ * 消息滚动
+ */
+function announceNoticeList() {
+    //滚动公告
+    var $noticeList = $(".notice-list");
+    var $noticeItems = $noticeList.children();
+    var noticeIndex = 0;
+    $noticeItems.css("position", "absolute").slice(1).remove();
+
+    function noticeList() {
+        $noticeItems.eq(noticeIndex).animate({
+            top: "-100%"
+        }, 400, function() {
+            $(this).remove();
+        });
+        noticeIndex = noticeIndex >= $noticeItems.length - 1 ? 0 : noticeIndex + 1;
+        $noticeItems.eq(noticeIndex).css("top", "100%").appendTo($noticeList).animate({
+            top: 0
+        }, 400);
+    };
+    $noticeList.hover(function() {
+        clearInterval(this.timer);
+    }, function() {
+        this.timer = setInterval(noticeList, 3000);  <!--设置滚速度-->
+    }).triggerHandler("mouseleave");
+}
+</script>
+
+
+<script>
+
+layui.use('util', function(){
+});
+layui.use('element', function(){
+  var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+
+  //监听导航点击
+  element.on('nav(demo)', function(elem){
+    //console.log(elem)
+    layer.msg(elem.text());
+  });
+});<!--其它-->
+layui.use(['form', 'layedit', 'laydate'], function(){});
+layui.use('flow', function(){
+  var flow = layui.flow;
+  flow.load({
+    elem: '#lazy_load' //流加载容器
+    ,isAuto: false
+    ,isLazyimg: true
+    ,done: function(page, next){ //加载下一页
+
+
+            ajax = new XMLHttpRequest();
+
+    ajax.open("GET","/article/article_list/0/0/"+page.toString()+"/",true);
+    ajax.onload = function(){
+
+        page_range = ajax.responseText[ajax.responseText.length-1];
+        data = ajax.responseText.substring(0,ajax.responseText.length-1); <!--移除后端放置的最大页码 在后端把最大页码加在了html最后-->
+
+ setTimeout(function(){
+
+
+        next(data,page < page_range); //假设总页数为 6
+
+
+      }, 500);
+
+
+    };  //读取数据成功之后
+    ajax.send();
+
+
+
+
+
+    }
+  });
+
+});<!--流加载-->
+layui.use('layer', function(){ //独立版的layer无需执行这一句
+  var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+
+  //触发事件
+  var active = {
+
+    offset: function(othis){
+      var type = othis.data('type')
+      ,text = othis.text();
+
+      layer.open({
+        type: 1
+        ,offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+
+        ,content:'<div style="padding:20px;"><form  method="post"  id="login" class="layui-form" action="/user/login/">' +
+                  ' <div class="layui-form-item">\n' +
+              '    <label class="layui-form-label">email:</label>\n' +
+              '    <div class="layui-input-inline">\n' +
+              '      <input type="text" name="email" required lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">\n' +
+              '    </div>\n' +
+              '  </div>'+
+              '<div class="layui-form-item">\n' +
+              '    <label class="layui-form-label">验证码:</label>\n' +
+              '    <div class="layui-input-inline">\n' +
+              '      <input type="text" id="captcha" name="captcha" required lay-verify="required" placeholder="请输入邮箱验证码" autocomplete="off" class="layui-input"><button id="captcha" name="login"  onclick="Captcha(this.name)" class="layui-btn layui-btn-primary">获取</button>\n' +
+              '    </div>\n' +
+              '<div class="layui-form-item">'+
+              '<input type="submit" class="layui-btn" value="登录" lay-submit=""  />'+
+              '</div>'
+        ,btn: ''
+        ,btnAlign: 'r' //按钮居中
+        ,shade: 0 //不显示遮罩
+
+
+
+      });
+    }
+  };
+
+  $('#login_register .login').on('click', function(){
+    var othis = $(this), method = othis.data('method');
+    active[method] ? active[method].call(this, othis) : '';
+  });
+
+});<!--登录模态-->
+layui.use('layer', function(){ //独立版的layer无需执行这一句
+  var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+
+  //触发事件
+  var active = {
+
+    offset: function(othis){
+      var type = othis.data('type')
+      ,text = othis.text();
+
+      layer.open({
+        type: 1
+        ,offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+        ,id: 'register'+type //防止重复弹出
+        ,content:'<div style="padding:20px;"><form  method="post" onsubmit="Register_Login(this.id)" id="register" class="layui-form" >' +
+                ' <div class="layui-form-item">\n' +
+              '    <label class="layui-form-label">username:</label>\n' +
+              '    <div class="layui-input-inline">\n' +
+              '      <input type="text" name="username" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">\n' +
+              '    </div>\n' +
+              '  </div>'+
+                  ' <div class="layui-form-item">\n' +
+              '    <label class="layui-form-label">email:</label>\n' +
+              '    <div class="layui-input-inline">\n' +
+              '      <input type="text" name="email" required lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">\n' +
+              '    </div>\n' +
+              '  </div>'+
+              '<div class="layui-form-item">\n' +
+              '    <label class="layui-form-label">验证码:</label>\n' +
+              '    <div class="layui-input-inline">\n' +
+              '      <input type="text" id="captcha" name="captcha" required lay-verify="required" placeholder="请输入邮箱验证码" autocomplete="off" class="layui-input"><button id="captcha" name="register" onclick="Captcha(this.name)" class="layui-btn layui-btn-primary">获取</button>\n' +
+              '    </div>\n' +
+              '<div class="layui-form-item">'+
+              '<input type="submit" class="layui-btn" value="注册" lay-submit=""  />'+
+              '</div>'
+
+        ,btnAlign: 'c' //按钮居中
+        ,shade: 0 //不显示遮罩
+
+      });
+    }
+  };
+
+  $('#login_register .register').on('click', function(){
+    var othis = $(this), method = othis.data('method');
+    active[method] ? active[method].call(this, othis) : '';
+  });
+
+});<!--注册模态-->
+layui.use(['carousel', 'form'], function(){
+  var carousel = layui.carousel
+  ,form = layui.form;
+
+//改变下时间间隔、动画类型、高度
+  carousel.render({
+    elem: '#test2'
+    ,interval: 1800
+    ,anim: 'default'
+    ,height: '250px'
+    ,width:'100%'
+  });
+
+
+});<!--轮播-->
+
+
+</script> <!--layui-->
+
+<script>
+
+
+function Register_Login(id) {
+    var form =  new FormData(document.getElementById(id));
+    ajax = new XMLHttpRequest();
+    ajax.open("post","/user/captcha/",true);
+    if (id==="register")
+        ajax.open("post","/user/register/",true);
+    else
+        ajax.open("post","/user/login",true);
+
+    ajax.onload = function(){
+      alert(ajax.responseText);
+    };
+
+    ajax.send(form);
+}
+
+
+function Captcha(id) {
+
+     var form =  new FormData(document.getElementById(id));
+     if(!form.get("email"))
+     {
+         alert("邮箱为空!");
+     }else
+     {
+         document.getElementById("captcha").innerText = "重新获取";
+         ajax = new XMLHttpRequest();
+
+     ajax.open("post","/user/captcha/",true);
+     ajax.onload = function(){
+
+         alert("邮件发送成功！\n若无法收到邮件请到垃圾箱查看 或检查邮箱是否正确!");};  //读取数据成功之后
+
+     ajax.send(form);
+     }
+
+
+
+}
+
+</script><!--验证码函数-->
+
+
+<script>
+    function Test(c)
+    {
+
+        document.getElementById("lazy_load").innerHTML="";
+
+        var sp = document.getElementById("hot_new");
+        var t = document.getElementById("new");
+        var childs =sp.childNodes;
+
+        if (c==="new")
+        {
+
+            childs[0].innerHTML="<cite>最新</cite>";
+            childs[2].innerHTML="最热";
+
+
+        }
+        else
+        {
+
+             childs[2].innerHTML="<cite>最热</cite>";
+        childs[0].innerHTML="最新";
+
+        }
+
+  layui.use('flow', function(){
+  var flow = layui.flow;
+  flow.load({
+    elem: '#lazy_load' //流加载容器
+    ,isAuto: false
+    ,isLazyimg: true
+    ,done: function(page, next){ //加载下一页
+            ajax = new XMLHttpRequest();
+
+                    var btns =  document.getElementById("btns").getElementsByTagName("button");
+
+                        for(var i=0;i<btns.length-1;i++)
+                        {
+
+                            var flag = 0;
+                            for(var j=0;j<btns[i].classList.length;j++)
+                            {
+
+                                if ("layui-btn-primary" === btns[i].classList[j])
+                                {
+                                    flag  = 1;  //表示没有选中的按钮
+                                    break;
+                                }
+
+                            }
+
+                            if(flag===0)  //表示没有btn-primary类型 即选中了
+                            {
+
+                                category_id = btns[i].id;
+
+                                break;
+                            }
+
+
+
+
+                        }
+
+
+
+                    if (c ==='new')
+                    {
+
+
+                        href = "/article/article_list/"+category_id.toString()+"/0/"+page.toString()+"/";
+                    }
+                    else{
+                        href = "/article/article_list/"+category_id.toString()+"/1/"+page.toString()+"/";
+                    }
+
+    ajax.open("GET",href,true);
+    ajax.onload = function(){
+
+        page_range = ajax.responseText[ajax.responseText.length-1];
+        data = ajax.responseText.substring(0,ajax.responseText.length-1); <!--移除后端放置的最大页码 在后端把最大页码加在了html最后-->
+
+ setTimeout(function(){
+
+
+        next(data,page < page_range); //假设总页数为 6
+
+
+      }, 500);
+
+
+    };  //读取数据成功之后
+    ajax.send();
+
+
+
+
+
+    }
+  });
+
+});<!--流加载-->
+
+    }
+
+
+</script><!--最新最热切换-->
+
+<script>
+
+    function change(btn_id) {
+
+        document.getElementById('lazy_load').innerHTML = "";
+
+        var d = document.getElementById("btns").getElementsByTagName("button");
+
+       for (var i = 0; i < d.length; i++) {
+           d[i].classList.add("layui-btn-primary");
+        }
+
+        document.getElementById(btn_id).classList.remove('layui-btn-primary');
+
+        layui.use('flow', function(){
+  var flow = layui.flow;
+  flow.load({
+    elem: '#lazy_load' //流加载容器
+    ,isAuto: false
+    ,isLazyimg: true
+    ,done: function(page, next){ //加载下一页
+
+        ajax = new XMLHttpRequest();
+
+ if (document.getElementById('new').innerHTML === "最新")
+        {
+
+            href = "/article/article_list/" + btn_id.toString() + "/1/" + page.toString() + "/";
+        }
+        else
+        {
+
+            href = "/article/article_list/" + btn_id.toString() + "/0/" + page.toString() + "/";
+        }
+
+
+
+
+        ajax.open("GET",href,true);
+        ajax.onload = function(){
+
+        page_range = ajax.responseText[ajax.responseText.length-1];
+        data = ajax.responseText.substring(0,ajax.responseText.length-1); <!--移除后端放置的最大页码 在后端把最大页码加在了html最后-->
+
+ setTimeout(function(){
+        next(data,page < page_range); //假设总页数为 6
+      }, 500);
+
+
+    };  //读取数据成功之后
+        ajax.send();
+
+    }
+  });
+
+});<!--流加载-->
+
+
+}
+
+</script> <!--按钮切换-->
+
+
+
+
+{% endblock %}
+
+
+
+
