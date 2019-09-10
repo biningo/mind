@@ -1,0 +1,179 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    友链
+{% endblock %}
+
+{% block css %}
+{% endblock %}
+
+{% block body %}
+
+    <div class="layui-container" style="margin-bottom: 300px;">
+     <blockquote style="background-color:lightyellow" class="layui-elem-quote"><h5 style="font-family: 楷体" class="ctitle"><span>世上最好的缘，便是有个聊得来的伴，永远不嫌你的话多，不厌其烦且久处不厌，永远会陪在身边，念你冷暖，且懂你悲欢。</span>
+         <span   > ----biningo</span></h5>
+</blockquote>
+
+<ul style="margin-top: 50px;">
+    {% for friend in friend_list %}
+    <span style="margin: 10px;font-size:larger"><a style="color: #00b7ee" href="#" onclick="window.location.href='http://'+'{{ friend.friendUrl }}'"><span style="font-size: larger" class="layui-icon layui-icon-link">{{ friend.name }}</span></a></span>
+    {% endfor %}
+
+</ul>
+
+    </div>
+
+
+{% endblock %}
+
+{% block js %}
+<div hidden id="login_register" style="margin-top: 10px">
+        <button id="register_btn" data-method="offset" data-type="auto" class="register layui-btn  layui-btn-sm layui-btn-normal">注册</button>
+        <button id="login_btn" data-method="offset" data-type="auto" class="login layui-btn  layui-btn-sm layui-btn-normal">登陆</button>
+        </div>
+<script>
+layui.use(['form', 'layedit', 'laydate'], function(){});
+
+
+
+    </script> <!--layui-->
+<script>
+layui.use('layer', function(){ //独立版的layer无需执行这一句
+  var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+
+  //触发事件
+  var active = {
+
+    offset: function(othis){
+      var type = othis.data('type')
+      ,text = othis.text();
+
+      layer.open({
+        type: 1
+        ,offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+
+        ,content:'<div style="padding:20px;"><form  method="post"  id="login" class="layui-form" action="/user/login/">' +
+                  ' <div class="layui-form-item">\n' +
+              '    <label class="layui-form-label">email:</label>\n' +
+              '    <div class="layui-input-inline">\n' +
+              '      <input type="text" name="email" required lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">\n' +
+              '    </div>\n' +
+              '  </div>'+
+              '<div class="layui-form-item">\n' +
+              '    <label class="layui-form-label">验证码:</label>\n' +
+              '    <div class="layui-input-inline">\n' +
+              '      <input type="text" id="captcha" name="captcha" required lay-verify="required" placeholder="请输入邮箱验证码" autocomplete="off" class="layui-input"><button id="captcha" name="login"  onclick="Captcha(this.name)" class="layui-btn layui-btn-primary">获取</button>\n' +
+              '    </div>\n' +
+              '<div class="layui-form-item">'+
+              '<input type="submit" class="layui-btn" value="登录" lay-submit=""  />'+
+              '</div>'
+        ,btn: ''
+        ,btnAlign: 'r' //按钮居中
+        ,shade: 0 //不显示遮罩
+
+
+
+      });
+    }
+  };
+
+  $('#login_register .login').on('click', function(){
+    var othis = $(this), method = othis.data('method');
+    active[method] ? active[method].call(this, othis) : '';
+  });
+
+});<!--登录模态-->
+layui.use('layer', function(){ //独立版的layer无需执行这一句
+  var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+
+  //触发事件
+  var active = {
+
+    offset: function(othis){
+      var type = othis.data('type')
+      ,text = othis.text();
+
+      layer.open({
+        type: 1
+        ,offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+        ,id: 'register'+type //防止重复弹出
+        ,content:'<div style="padding:20px;"><form  method="post" onsubmit="Register_Login(this.id)" id="register" class="layui-form" >' +
+                ' <div class="layui-form-item">\n' +
+              '    <label class="layui-form-label">username:</label>\n' +
+              '    <div class="layui-input-inline">\n' +
+              '      <input type="text" name="username" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">\n' +
+              '    </div>\n' +
+              '  </div>'+
+                  ' <div class="layui-form-item">\n' +
+              '    <label class="layui-form-label">email:</label>\n' +
+              '    <div class="layui-input-inline">\n' +
+              '      <input type="text" name="email" required lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">\n' +
+              '    </div>\n' +
+              '  </div>'+
+              '<div class="layui-form-item">\n' +
+              '    <label class="layui-form-label">验证码:</label>\n' +
+              '    <div class="layui-input-inline">\n' +
+              '      <input type="text" id="captcha" name="captcha" required lay-verify="required" placeholder="请输入邮箱验证码" autocomplete="off" class="layui-input"><button id="captcha" name="register" onclick="Captcha(this.name)" class="layui-btn layui-btn-primary">获取</button>\n' +
+              '    </div>\n' +
+              '<div class="layui-form-item">'+
+              '<input type="submit" class="layui-btn" value="注册" lay-submit=""  />'+
+              '</div>'
+
+        ,btnAlign: 'c' //按钮居中
+        ,shade: 0 //不显示遮罩
+
+      });
+    }
+  };
+
+  $('#login_register .register').on('click', function(){
+    var othis = $(this), method = othis.data('method');
+    active[method] ? active[method].call(this, othis) : '';
+  });
+
+});<!--注册模态-->
+
+function Register_Login(id) {
+    var form =  new FormData(document.getElementById(id));
+    ajax = new XMLHttpRequest();
+    ajax.open("post","/user/captcha/",true);
+    if (id==="register")
+        ajax.open("post","/user/register/",true);
+    else
+        ajax.open("post","/user/login",true);
+
+    ajax.onload = function(){
+      alert(ajax.responseText);
+    };
+
+    ajax.send(form);
+}
+
+
+function Captcha(id) {
+
+     var form =  new FormData(document.getElementById(id));
+     if(!form.get("email"))
+     {
+         alert("邮箱为空!");
+     }else
+     {
+         document.getElementById("captcha").innerText = "重新获取";
+         ajax = new XMLHttpRequest();
+
+     ajax.open("post","/user/captcha/",true);
+     ajax.onload = function(){
+
+         alert("邮件发送成功！\n若无法收到邮件请到垃圾箱查看 或检查邮箱是否正确!");};  //读取数据成功之后
+
+     ajax.send(form);
+     }
+
+
+
+}
+
+</script><!--用户登录-->
+
+
+{% endblock %}

@@ -1,0 +1,422 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    留言板
+{% endblock title %}
+
+{% block css %}
+      <!--[if lt IE 9]>
+<script type="text/javascript" src="/staticRes/js/html5shiv.js"></script>
+<script type="text/javascript" src="/staticRes/js/respond.min.js"></script>
+<![endif]-->
+<link rel="stylesheet" type="text/css" href="/static/plugin/h-ui/css/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="/static/plugin/Hui-iconfont/1.0.8/iconfont.min.css" />
+<link rel="stylesheet" type="text/css" href="/static/css/common.css" />
+<link rel="stylesheet" type="text/css" href="/static/plugin/pifu/pifu.css" />
+<link rel="stylesheet" type="text/css" href="/static/plugin/wangEditor/css/wangEditor.min.css">
+<!--[if lt IE 9]>
+<link href="/staticRes/lib/h-ui/css/H-ui.ie.css" rel="stylesheet" type="text/css" />
+<![endif]-->
+
+{% endblock css %}
+
+
+{% block body %}
+
+<div class="layui-container" style="">
+
+<div class="layui-row" style="">
+
+     <blockquote style="background-color:mistyrose" class="layui-elem-quote"><h5 style="font-family: 楷体;" class="ctitle"><span style="font-weight: bolder">火柴突然觉得头很痒，就伸手挠，挠着挠着他就火了！<br>绿豆失恋了，他很伤心，一直哭一直哭，后来他发芽了!</span><br>
+         <span  style="margin-left: 50%;"> ----biningo</span></h5>
+</blockquote>
+
+</div>
+
+
+<div class="layui-row">
+    <div class="layui-col-md8">
+
+    <div style="margin-top: 5px;" class="panel panel-default  mb-20">
+						<div class="tab-category">
+                <a href=""><strong>留言区</strong></a>
+            </div>
+
+
+
+<div class="panel-body">
+
+<div class="layui-row" style="margin-top: 10px;">
+    <div class="layui-container">
+
+         {% if user_account.email %}
+             <span  id="user">{{ user_account.username }} 您好！</span>
+         {% else %}
+             <span id="user">请先登录再评论</span>
+         <div id="login_register">
+
+            <button id="register_btn" data-method="offset" data-type="auto" class="register layui-btn  layui-btn-sm layui-btn-normal">注册</button>
+        <button id="login_btn" data-method="offset" data-type="auto" class="login layui-btn  layui-btn-sm layui-btn-normal">登陆</button>
+
+         </div>
+     {% endif %}
+    </div>
+
+</div> <!--用户登录及其验证-->
+     <!--用于评论-->
+        <div class="mt-20" id="ct">
+
+            <form  method="post"  id="note" class="layui-form layui-form-pane" >
+
+ <textarea id="textarea1" name="content" style="height:200px;" placeholder="看完不留一发？"> </textarea>
+  私密:<input value="0" name="type" type="radio"> 公开:<input value="1" checked name="type" type="radio"> 建议:<input value="2" name="type" type="radio">
+                <div class="text-r mt-10">
+                <button  type="button" onclick="NoteCommit()" class="btn btn-primary radius" > 留言</button>
+            </div>
+</form>
+
+
+
+
+        </div>
+
+
+<div>
+        <ul class="commentList mt-50">
+
+       {% for note in note_list %}
+           {% ifequal note.father null %}
+          <li class="item cl"> <a href="#"><i class="avatar size-L radius"><img alt="" src="/static/images/touxiang.png"></i></a>
+                <div class="comment-main">
+                    <header class="comment-header">
+                        <div class="comment-meta"><a class="comment-author" href="#">{{ note.user.username}}</a>
+                            <time  class="f-r">{{ note.created_time | date:"Y-m-d" }}</time>
+                        </div>
+                    </header>
+                    <div class="comment-body">
+                        {{ note.content|safe }}
+
+                        <ul  class="commentList">
+
+{% for resp in note.note_set.all %}
+
+                            <li class="item cl"> <a href="#"><i class="avatar size-L radius"><img alt="" src="/static/images/touxiang.png"></i></a>
+                                <div class="comment-main">
+                                    <header class="comment-header">
+                                        <div class="comment-meta"><a class="comment-author" href="#">{{ resp.user.username }}</a>
+                                            <time  class="f-r">{{ resp.created_time|date:'Y-m-d' }}</time>
+                                        </div>
+                                    </header>
+                                    <div class="comment-body">
+                                        <p>{{ resp.content }}</p>
+                                    </div>
+                                </div>
+                            </li>
+{% endfor %}
+
+                        </ul>
+
+                        <button class="hf f-r btn btn-default size-S mt-10" name={{ note.id }} style="display: block;">回复</button>
+
+                    </div>
+                </div>
+            </li>
+           {% endifequal %}
+        {% endfor %}
+
+        </ul> <!--评论展示-->
+
+</div> <!--一评论展示-->
+
+
+
+ <!--用于回复框-->
+        <div class="comment hidden mt-20">
+           <form method="post">
+
+            <textarea name="content" class="textarea" style="height:100px;"> </textarea>
+            <button  onclick="NoteResp()" type="button" class="btn btn-primary radius mt-10">回复</button>
+            <a class="cancelReply f-r mt-10">取消回复</a>
+           </form>
+        </div>
+</div>
+
+
+	</div><!--留言区-->
+
+    </div>
+</div>
+</div>
+
+
+
+
+{% endblock body %}
+
+
+{% block js %}
+    <script src="https://cdn.bootcss.com/showdown/1.3.0/showdown.min.js"></script>
+<script src="https://lib.baomitu.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://lib.baomitu.com/underscore.js/1.9.1/underscore-min.js"></script>
+
+<script>
+layui.use(['form', 'layedit', 'laydate'], function(){});
+
+
+
+    </script> <!--layui-->
+
+
+<script>
+layui.use('layer', function(){ //独立版的layer无需执行这一句
+  var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+
+  //触发事件
+  var active = {
+
+    offset: function(othis){
+      var type = othis.data('type')
+      ,text = othis.text();
+
+      layer.open({
+        type: 1
+        ,offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+
+        ,content:'<div style="padding:20px;"><form  method="post"  id="login" class="layui-form" action="/user/login/">' +
+                  ' <div class="layui-form-item">\n' +
+              '    <label class="layui-form-label">email:</label>\n' +
+              '    <div class="layui-input-inline">\n' +
+              '      <input type="text" name="email" required lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">\n' +
+              '    </div>\n' +
+              '  </div>'+
+              '<div class="layui-form-item">\n' +
+              '    <label class="layui-form-label">验证码:</label>\n' +
+              '    <div class="layui-input-inline">\n' +
+              '      <input type="text" id="captcha" name="captcha" required lay-verify="required" placeholder="请输入邮箱验证码" autocomplete="off" class="layui-input"><button id="captcha" name="login"  onclick="Captcha(this.name)" class="layui-btn layui-btn-primary">获取</button>\n' +
+              '    </div>\n' +
+              '<div class="layui-form-item">'+
+              '<input type="submit" class="layui-btn" value="登录" lay-submit=""  />'+
+              '</div>'
+        ,btn: ''
+        ,btnAlign: 'r' //按钮居中
+        ,shade: 0 //不显示遮罩
+
+
+
+      });
+    }
+  };
+
+  $('#login_register .login').on('click', function(){
+    var othis = $(this), method = othis.data('method');
+    active[method] ? active[method].call(this, othis) : '';
+  });
+
+});<!--登录模态-->
+layui.use('layer', function(){ //独立版的layer无需执行这一句
+  var $ = layui.jquery, layer = layui.layer; //独立版的layer无需执行这一句
+
+  //触发事件
+  var active = {
+
+    offset: function(othis){
+      var type = othis.data('type')
+      ,text = othis.text();
+
+      layer.open({
+        type: 1
+        ,offset: type //具体配置参考：http://www.layui.com/doc/modules/layer.html#offset
+        ,id: 'register'+type //防止重复弹出
+        ,content:'<div style="padding:20px;"><form  method="post" onsubmit="Register_Login(this.id)" id="register" class="layui-form" >' +
+                ' <div class="layui-form-item">\n' +
+              '    <label class="layui-form-label">username:</label>\n' +
+              '    <div class="layui-input-inline">\n' +
+              '      <input type="text" name="username" required lay-verify="required" placeholder="请输入用户名" autocomplete="off" class="layui-input">\n' +
+              '    </div>\n' +
+              '  </div>'+
+                  ' <div class="layui-form-item">\n' +
+              '    <label class="layui-form-label">email:</label>\n' +
+              '    <div class="layui-input-inline">\n' +
+              '      <input type="text" name="email" required lay-verify="required" placeholder="请输入邮箱" autocomplete="off" class="layui-input">\n' +
+              '    </div>\n' +
+              '  </div>'+
+              '<div class="layui-form-item">\n' +
+              '    <label class="layui-form-label">验证码:</label>\n' +
+              '    <div class="layui-input-inline">\n' +
+              '      <input type="text" id="captcha" name="captcha" required lay-verify="required" placeholder="请输入邮箱验证码" autocomplete="off" class="layui-input"><button id="captcha" name="register" onclick="Captcha(this.name)" class="layui-btn layui-btn-primary">获取</button>\n' +
+              '    </div>\n' +
+              '<div class="layui-form-item">'+
+              '<input type="submit" class="layui-btn" value="注册" lay-submit=""  />'+
+              '</div>'
+
+        ,btnAlign: 'c' //按钮居中
+        ,shade: 0 //不显示遮罩
+
+      });
+    }
+  };
+
+  $('#login_register .register').on('click', function(){
+    var othis = $(this), method = othis.data('method');
+    active[method] ? active[method].call(this, othis) : '';
+  });
+
+});<!--注册模态-->
+
+function Register_Login(id) {
+    var form =  new FormData(document.getElementById(id));
+    ajax = new XMLHttpRequest();
+    ajax.open("post","/user/captcha/",true);
+    if (id==="register")
+        ajax.open("post","/user/register/",true);
+    else
+        ajax.open("post","/user/login",true);
+
+    ajax.onload = function(){
+      alert(ajax.responseText);
+    };
+
+    ajax.send(form);
+}
+
+
+function Captcha(id) {
+
+     var form =  new FormData(document.getElementById(id));
+     if(!form.get("email"))
+     {
+         alert("邮箱为空!");
+     }else
+     {
+         document.getElementById("captcha").innerText = "重新获取";
+         ajax = new XMLHttpRequest();
+
+     ajax.open("post","/user/captcha/",true);
+     ajax.onload = function(){
+
+         alert("邮件发送成功！\n若无法收到邮件请到垃圾箱查看 或检查邮箱是否正确!");};  //读取数据成功之后
+
+     ajax.send(form);
+     }
+
+
+
+}
+
+</script><!--用户登录-->
+
+<!--=====================-->
+    <script type="text/javascript" src="/static/plugin/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="/static/plugin/layer/3.0/layer.js"></script>
+<script type="text/javascript" src="/static/plugin/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" src="/static/plugin/pifu/pifu.js"></script>
+<script type="text/javascript" src="/static/js/common.js"></script>
+
+<script type="text/javascript" src="/static/plugin/wangEditor/js/wangEditor.min.js"></script>
+<script type="text/javascript">
+    $(function () {
+    		$("img.lazyload").lazyload({failurelimit : 3});
+
+        wangEditor.config.printLog = false;
+        var editor1 = new wangEditor('textarea1');
+        editor1.config.menus = ['insertcode', 'quote', 'bold', '|', 'img', 'emotion', '|', 'undo', 'fullscreen'];
+        editor1.config.emotions = { 'default': { title: '表情', data: '/static/plugin/wangEditor/emotions1.data'}, 'default2': { title: '心情', data: '/static/plugin/wangEditor/emotions3.data'}, 'default3': { title: '顶一顶', data: '/static/plugin/wangEditor/emotions2.data'}};
+        editor1.create();
+
+        //show reply
+        $(".hf").click(function () {
+            pId = $(this).attr("name");
+
+            $(this).parents(".commentList").find(".cancelReply").trigger("click");
+            $(this).parent(".comment-body").append($(".comment").clone(true));
+            $(this).parent(".comment-body").find(".comment").removeClass("hidden");
+            $(this).parent(".comment-body").find(".comment").addClass(pId.toString());
+            $(this).parent(".comment-body").find(".comment").addClass("resp");
+            $(this).hide();
+        });
+        //cancel reply
+        $(".cancelReply").on('click',function () {
+            $(this).parents(".comment-body").find(".hf").show();
+            $(this).parents(".comment-body").find(".comment").remove();
+        });
+    });
+
+</script>
+
+    <script>
+
+    function NoteCommit() {
+
+        if(document.getElementById('user').innerText!=='请先登录再评论')
+        {
+
+              var form =  new FormData(document.getElementById('note'));
+
+
+             ajax = new XMLHttpRequest();
+
+             ajax.open("post", "/other/note/post/", true);
+             ajax.onload = function () {
+                layer.msg("留言成功");
+                setTimeout( function()
+                {
+                window.location.reload();
+                   }
+             ,2000)
+             };
+
+                 ajax.send(form);
+
+        }
+        else
+        {
+
+            layer.msg("请先登录");
+        }
+
+
+
+
+    }
+
+function NoteResp() {
+
+   if(document.getElementById('user').innerText!=='请先登录再评论')
+   {
+
+     var form =  new FormData(document.getElementsByClassName("resp")[0].getElementsByTagName('form')[0]);
+
+
+             ajax = new XMLHttpRequest();
+
+             ajax.open("post", "/other/note/post/", true);
+             ajax.onload = function () {
+                layer.msg("回复成功");
+                setTimeout( function()
+                {
+                window.location.reload();
+                   }
+             ,2000)
+             };
+             var note_id = document.getElementsByClassName("resp")[0].classList[2];
+                form.append("note_id",note_id);
+                 ajax.send(form);
+
+        }
+        else
+        {
+
+            layer.msg("请先登录");
+        }
+
+
+
+
+
+
+}
+
+    </script>
+
+
+{% endblock js %}

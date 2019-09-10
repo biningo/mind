@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ tag.name }}
+{% endblock title %}
+
+{% block css %}
+    <link href="/static/css/learn.css" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+<div class="layui-container" style="margin-bottom: 30%;">
+
+<blockquote style="background-color:mistyrose" class="layui-elem-quote"><h6 style="font-family: 楷体" class="ctitle"><span style="font-weight: bolder;">你，生命中最重要的过客，之所以是过客，因为你未曾为我停留。</span><br>
+        <span  style="margin-left: 50%;">----biningo</span></h6>
+</blockquote>
+
+
+<div style="margin-bottom: 5px;" class="layui-row">
+
+      <div class="layui-row" >
+
+      <div class="rnav">
+      <ul>
+{% for tag in tags %}
+
+
+   <li><a href="/article/tags/{{ tag.name }}/">{{ tag.name }}({{ tag.article_set.count }})</a></li>
+
+{% endfor %}
+      </ul>
+      </div>
+
+
+ </div>
+
+
+</div>
+<div class="layui-row">
+<div class="layui-col-md8">
+    <div style="margin-bottom: 3%">
+    <h3>  <span style="font-size: larger;font-family: 华文行楷">{{ tag.name }}</span><span class="layui-icon layui-icon-note" style="font-size: larger;"></span>
+    </h3></div>
+
+<div class="layui-row">
+#<a href="#" style="margin-bottom: 20px;">共计 {{ articles.count }} 篇文章</a>
+    <ul class="layui-timeline">
+
+        {% for article in articles %}
+   <li style="margin: 10px;">
+
+
+              <div  class="layui-col-md8 layui-card" style="padding: 5px;margin-top:10px;box-shadow:0px 2px 10px #000;">
+
+             <fieldset class="layui-field-title" style="margin-bottom: 0px">
+
+                 <legend><a  href="/article/detail/{{ article.created_time|date:'Y' }}/{{ article.created_time|date:'m'}}/{{ article.id}}/">{{ article.title }}</a><br>
+
+                   <span style="margin-left: 10px;font-size: 13px;" class="layui-icon layui layui-icon-template-1"><a href="/article/category/{{ article.category.name }}/">{{ article.category.name }}</a></span>
+
+                     {% for tag in article.tags.all %}
+
+                <span class="layui-icon layui-icon-note" style="font-size:12px;"></span><a   style="text-decoration: underline;font-size: 13px;font-family:楷体; color: #4D344A" href="/article/tags/{{ tag.name }}/">{{ tag.name }}</a>
+                    {% endfor %}
+                 <span  class="layui-badge layui-bg-gray">浏览{{ article.access_count }}</span><span class="layui-badge layui-bg-gray">{{ article.created_time|date:"Y-m-d" }}</span>
+
+                </legend>
+             </fieldset>
+
+</div>
+
+
+      </li>
+        {% endfor %}
+
+</ul>
+
+</div>
+</div >
+</div>
+
+
+
+</div>
+
+
+{% endblock body %}
+
+
+{% block js %}
+{% endblock js %}
