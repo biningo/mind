@@ -19,6 +19,19 @@ from Blog2.decorators.ajax import ajax_required
 from OtherApp.models import Notice, BroadCast
 from UserApp.models import StrangeUser, UserAccount
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+
+class TimeArticle():
+    def __init__(self,year,month,count):
+        self.year = year
+        self.month = month
+        self.count = count
+
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
 def Main(request):
     return redirect(reverse("article:index"))
 
@@ -46,11 +59,24 @@ def Index(request):
         s = str(article.created_time.year)+"-"+str(article.created_time.month)
         times.add(s)
 
+<<<<<<< HEAD
     timeArticles_map = {}
+=======
+<<<<<<< HEAD
+    timeArticles_map = {}
+=======
+    timeArticles_map = []
+
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
     for t in times:
         year = int(t.split("-")[0])
         month = int(t.split("-")[1])
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> '解决用户登录和前端样式调整'
         dayMax = 30
         months = [1, 3, 5, 7, 8, 10, 12]
         if int(month) in months:
@@ -59,6 +85,18 @@ def Index(request):
         timeArticles_map[t] = Article.objects.filter(created_time__range=(datetime.date(int(year), int(month), 1),
                                                                         datetime.date(int(year), int(month), dayMax))).count()
 
+<<<<<<< HEAD
+=======
+=======
+
+
+        count = str(Article.objects.filter(created_time__range=[str(year) + "-" + str(month) + "-01",str(year) + "-" + str(month + 1) + "-01"]).count())
+        #print(temp)
+        temp = TimeArticle(str(year), str(month),count)
+        timeArticles_map.append(temp)
+        
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
     message['timeArticle_map'] = timeArticles_map #归档
     #网站信息
     message['access_people_count'] = StrangeUser.objects.all().count()
@@ -124,6 +162,10 @@ def Detail(request,year,month,id):
         message['comment_list'] = article.articlecomment_set.all().order_by('-created_time')
         return render(request, "ArticleApp/blog-detail.html", message)
     else:
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> '解决用户登录和前端样式调整'
         dayMax = 30
         months = [1, 3, 5, 7, 8, 10, 12]
         if int(month) in months:
@@ -132,17 +174,38 @@ def Detail(request,year,month,id):
 datetime.date(int(year), int(month),dayMax)))
 
         # 归档
+<<<<<<< HEAD
+=======
+=======
+        artile_findBy_time = Article.objects.filter(created_time__range=(datetime.date(int(year), int(month), 1),
+                                                                         datetime.date(int(year), int(month)+1,1)))
+
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
         times = set()
         articles = Article.objects.all()
         for article in articles:
             s = str(article.created_time.year) + "-" + str(article.created_time.month)
             times.add(s)
 
+<<<<<<< HEAD
         timeArticles_map = {}
+=======
+<<<<<<< HEAD
+        timeArticles_map = {}
+=======
+        timeArticles_map = []
+
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
         for t in times:
             year = int(t.split("-")[0])
             month = int(t.split("-")[1])
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> '解决用户登录和前端样式调整'
             dayMax = 30
             months = [1, 3, 5, 7, 8, 10, 12]
             if int(month) in months:
@@ -153,6 +216,18 @@ datetime.date(int(year), int(month),dayMax)))
                                                                                             dayMax))).count()
 
         message['timeArticle_map'] = timeArticles_map
+<<<<<<< HEAD
+=======
+=======
+            count = str(Article.objects.filter(created_time__range=[str(year) + "-" + str(month) + "-01",
+                                                                    str(year) + "-" + str(month + 1) + "-01"]).count())
+            # print(temp)
+            temp = TimeArticle(str(year), str(month), count)
+            timeArticles_map.append(temp)
+
+        message['timeArticle_map'] = timeArticles_map  # 归档
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
 
 
         message['article_findBy_time'] = artile_findBy_time
@@ -230,7 +305,18 @@ def ArticlePost(request):
         return HttpResponse("想啥呢兄弟")
 
     article = Article()
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+
+=======
+    id= request.POST.get("article_id")
+    if id:
+        article = Article.objects.get(id=id)
+	article.created_time=datetime.datetime.now()
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
     article.title = request.POST.get("title")
     article.summary = request.POST.get("summary")
     article.content_html = request.POST.get("article_content_html")
@@ -239,7 +325,17 @@ def ArticlePost(request):
     copyright = request.POST.get("copyright")
     article.copyright =True
     article.category = Category.objects.get(id=request.POST.get("category"))
+<<<<<<< HEAD
     article.topic = SpecialTopic.objects.get(id=request.POST.get('topic'))
+=======
+<<<<<<< HEAD
+    article.topic = SpecialTopic.objects.get(id=request.POST.get('topic'))
+=======
+    topic_id = request.POST.get('topic')
+    if topic_id!="0":
+        article.topic = SpecialTopic.objects.get(id=topic_id)
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
     article.save()   #先保存再加标签 多对多需要id
     tags = Tag.objects.all()
     for tag in tags:
@@ -258,6 +354,14 @@ def UpdateArticle(request,id):
     message['article'] = article
     message['categories'] = Category.objects.all()
     message['tags'] = Tag.objects.all()
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    message['topic_list']=SpecialTopic.objects.all()
+    message['user_account']=request.user_account
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
     return render(request,'ArticleApp/blog-edit.html',message)
 
 #文章评论提交
@@ -337,6 +441,13 @@ def CategoryView(request,category_name):
     message['articles'] = articles
     message['category_name'] = category_name
     message['tags'] = Tag.objects.all()
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+    message['topic_list'] = SpecialTopic.objects.all()
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
 
     # 网站信息
     message['access_people_count'] = StrangeUser.objects.all().count()
@@ -373,4 +484,12 @@ def TopicView(request,topic_id):
 
     message['article_count'] = Article.objects.all().count()
 
+<<<<<<< HEAD
     return render(request,'ArticleApp/topic_detail.html',message)
+=======
+<<<<<<< HEAD
+    return render(request,'ArticleApp/topic_detail.html',message)
+=======
+    return render(request,'ArticleApp/topic_detail.html',message)
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'

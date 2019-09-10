@@ -5,7 +5,15 @@ from random import Random
 from django.core.mail import send_mail
 from django.db.models import F
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
+<<<<<<< HEAD
 from django.shortcuts import render
+=======
+<<<<<<< HEAD
+from django.shortcuts import render
+=======
+from django.shortcuts import render,redirect
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
 
 # Create your views here.
 from django.urls import reverse
@@ -22,6 +30,10 @@ def Register(request):
     if request.POST.get("captcha") == r.get("captcha"):
         user = UserAccount()
         user.email = request.POST.get("email")
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> '解决用户登录和前端样式调整'
         user.username = user.email
 
         user.password=666666
@@ -29,6 +41,18 @@ def Register(request):
         request.session.set_expiry(60 * 60 * 3)  # 三小时
         request.session["user_email"] = user.email
         return HttpResponseRedirect("/article/index/")
+<<<<<<< HEAD
+=======
+=======
+        user.username = request.POST.get("username")
+
+        user.password=666666
+        user.save()
+        request.session.set_expiry(60 * 60 * 24*30)  # 三小时
+        request.session["user_email"] = user.email
+        return redirect(reverse("article:index"))
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
     else:
         return HttpResponse("验证码不正确")
 
@@ -47,7 +71,15 @@ def Captcha(request):
         number = r.get("captcha")
 
     #r.set("captcha",number,ex=60*5)  #设置验证码时间为5分钟
+<<<<<<< HEAD
     send_mail('PB的博客','欢迎注册：验证码为---->'+str(number), 'm19884605250@163.com',
+=======
+<<<<<<< HEAD
+    send_mail('PB的博客','欢迎注册：验证码为---->'+str(number), 'm19884605250@163.com',
+=======
+    send_mail('biningo的博客','验证码为---->'+str(number), 'm19884605250@163.com',
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
              emails , fail_silently=True)
 
     return HttpResponse(number)
@@ -65,7 +97,15 @@ def Login(request):
     if user:
         request.session.set_expiry(60 * 60 * 24*30)  # 一个月
         request.session["user_email"] = user.email
+<<<<<<< HEAD
         return HttpResponseRedirect("/article/index")
+=======
+<<<<<<< HEAD
+        return HttpResponseRedirect("/article/index")
+=======
+        return redirect(reverse("article:index"))
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
     else:
         return HttpResponse("验证码不正确")
 

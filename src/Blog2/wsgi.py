@@ -11,6 +11,14 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
+<<<<<<< HEAD
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Blog2.settings')
+=======
+<<<<<<< HEAD
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Blog2.settings')
+=======
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'Blog2.settings.base')
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
 
 application = get_wsgi_application()

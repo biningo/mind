@@ -15,7 +15,15 @@
   <script>
          function sumb() {
 
+<<<<<<< HEAD
             if(document.getElementById("username").innerHTML.trim()==="PB")
+=======
+<<<<<<< HEAD
+            if(document.getElementById("username").innerHTML.trim()==="PB")
+=======
+            if(document.getElementById("username").innerHTML.trim()==="m19884605250@163.com")
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
             return true;
             else
             {
@@ -51,6 +59,13 @@ return false;
     <label class="layui-form-label">专栏</label>
     <div class="layui-input-block">
       <select name="topic" lay-filter="aihao">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+<option value="0"  >无 </option>
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
           {% for topic in topic_list %}
         <option  value="{{ topic.id }}">{{ topic.name }}</option>
           {% endfor %}
@@ -61,11 +76,26 @@ return false;
         <div class="layui-form-item">
     <label class="layui-form-label">贴标签</label>
     <div class="layui-input-block">
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> '解决用户登录和前端样式调整'
         {% for tag in tags %}
 
       <input  name="{{ tag.name }}" type="checkbox"   title="{{ tag.name }}">
         {% endfor %}
 
+<<<<<<< HEAD
+=======
+=======
+ 
+       {% for tag in tags %}
+
+      <input  name="{{ tag.name }}" type="checkbox"   title="{{ tag.name }}">
+        {% endfor %}
+ <input hidden name="article_id" value="{{article.id}}" />
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
     </div>
   </div> <!--标签-->
 
@@ -172,4 +202,12 @@ return false;
 
 
 </body>
+<<<<<<< HEAD
 </html>
+=======
+<<<<<<< HEAD
+</html>
+=======
+</html>
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'

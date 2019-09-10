@@ -238,7 +238,16 @@
         <div  style="width: 80%;padding: 20px;box-shadow:0px 2px 10px #000;margin-left: 2px; color: #fff;" class="layui-card" >
 
             {% for k in timeArticle_map %}
+<<<<<<< HEAD
 <a style="text-decoration: underline" href="/article/detail/{{ k|slice:"4" }}/{{ k|slice:"5:7"}}/0/">{{ k }}({{ k.0 }}篇)</a>
+=======
+<<<<<<< HEAD
+<a style="text-decoration: underline" href="/article/detail/{{ k|slice:"4" }}/{{ k|slice:"5:7"}}/0/">{{ k }}({{ k.0 }}篇)</a>
+=======
+
+<a style="text-decoration: underline" href="/article/detail/{{ k.year}}/{{ k.month}}/0/">{{k.year}}-{{k.month}} ({{k.count}}篇)</a>
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
             {% endfor %}
 
         </div>
@@ -254,7 +263,15 @@
 <ul>
 
     <li><span class="layui-icon layui-icon-edit"></span>文章数量：{{ article_count }} 篇</li>
+<<<<<<< HEAD
 <li><span class="layui-icon layui-icon-note"></span>标签数量：{{ topic_list.count }} 个</li>
+=======
+<<<<<<< HEAD
+<li><span class="layui-icon layui-icon-note"></span>标签数量：{{ topic_list.count }} 个</li>
+=======
+<li><span class="layui-icon layui-icon-note"></span>标签数量：{{ tags.count }} 个</li>
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
 
     <li><span  class="layui-icon layui-icon-template-1"></span>分类数量：{{ categories.count }} 种</li>
      <li><span class="layui-icon layui-icon-group"></span>总访问量：{{ access_count }} </li>
@@ -603,7 +620,15 @@ function Register_Login(id) {
         ajax.open("post","/user/login",true);
 
     ajax.onload = function(){
+<<<<<<< HEAD
       alert(ajax.responseText);
+=======
+<<<<<<< HEAD
+      alert(ajax.responseText);
+=======
+      alert("注册成功");
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
     };
 
     ajax.send(form);

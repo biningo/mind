@@ -5,8 +5,17 @@ import sys
 
 
 def main():
+<<<<<<< HEAD
     profile = os.environ.get('TYPEIDEA_PROFILE', 'dev')
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', "Blog2.settings.%s" % profile)
+=======
+<<<<<<< HEAD
+    profile = os.environ.get('TYPEIDEA_PROFILE', 'dev')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', "Blog2.settings.%s" % profile)
+=======
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', "Blog2.settings.base")
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
     try:
         from django.core.management import execute_from_command_line
     except ImportError as exc:

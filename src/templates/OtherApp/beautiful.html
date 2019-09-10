@@ -1,7 +1,21 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> '解决用户登录和前端样式调整'
 <!doctype html>
 <html>
 <head>
 <meta charset="utf-8">
+<<<<<<< HEAD
+=======
+=======
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width， initial-scale=1" />
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
 <title>带你看最美丽的烟火</title>
 
 <style>
@@ -114,7 +128,15 @@ class Particle {
 	}
 }
 
+<<<<<<< HEAD
 Particle.GRAVITATION = new Vector2(0, 9.81);
+=======
+<<<<<<< HEAD
+Particle.GRAVITATION = new Vector2(0, 9.81);
+=======
+Particle.GRAVITATION = new Vector2(0, 17.81);
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
 
 class Trail extends Particle {
 	constructor(childFactory, position, velocity = new Vector2, lifetime = 1, mass = 1) {
@@ -189,14 +211,32 @@ let rockets = [];
 
 const getTrustParticleFactory = function(baseHue) {
 	function getColor() {
+<<<<<<< HEAD
 		const hue = Math.floor(Math.random() * 15 + 30);
 		return `hsl(${hue}, 100%, 75%`;
+=======
+<<<<<<< HEAD
+		const hue = Math.floor(Math.random() * 15 + 30);
+		return `hsl(${hue}, 100%, 75%`;
+=======
+		const hue = Math.floor(Math.random() * 15 + 10);
+		return `hsl(${hue}, 100%, 100%`;
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
 	}
 
 	return function(parent) {
 		const position = this.position.clone();
 		const velocity = this.velocity.clone().multiplyScalar(-.1);
+<<<<<<< HEAD
 		velocity.x += (Math.random() - .5) * 8;
+=======
+<<<<<<< HEAD
+		velocity.x += (Math.random() - .5) * 8;
+=======
+		velocity.x += (Math.random() - .5) * 5;
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
 		const color = getColor();
 		const radius = 1 + Math.random();
 		const lifetime = .5 + Math.random() * .5;
@@ -229,7 +269,15 @@ const getExplosionFactory = function(baseHue) {
 
 	function getTrail(position) {
 		const direction = Math.random() * Math.PI * 2;
+<<<<<<< HEAD
 		const force = Math.random() * 128;
+=======
+<<<<<<< HEAD
+		const force = Math.random() * 128;
+=======
+		const force = Math.random() * 170;
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
 		const velocity = new Vector2(Math.cos(direction) * force, Math.sin(direction) * force);
 		const lifetime = .5 + Math.random();
 		const mass = .075;
@@ -285,7 +333,15 @@ document.body.appendChild(canvas);
 window.onresize = resize;
 resize();
 
+<<<<<<< HEAD
 setInterval(addRocket, 300);
+=======
+<<<<<<< HEAD
+setInterval(addRocket, 300);
+=======
+setInterval(addRocket, 500);
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
 render();</script>
 
 <script>

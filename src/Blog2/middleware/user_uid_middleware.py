@@ -28,12 +28,27 @@ class UserAccessMiddleWare:
         return response
 
     def get_sUser(self,request):
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> '解决用户登录和前端样式调整'
         try:
             uid = request.session[USER_KEY]
             sUser = StrangeUser.objects.filter(uid=uid)
             sUser.update(access_count=F('access_count') + 1)
             return sUser[0]
         except KeyError:
+<<<<<<< HEAD
+=======
+=======
+        uid = request.session.get(USER_KEY)
+        if uid!=None:
+            sUser = StrangeUser.objects.filter(uid=uid)
+            sUser.update(access_count=F('access_count') + 1)
+            return sUser[0]
+        else:
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
             uid = request.META.get('REMOTE_ADDR')
             request.session.set_expiry(60*60*24*10)
             request.session[USER_KEY] = uid
@@ -46,7 +61,15 @@ class UserAccessMiddleWare:
                 ssUser = StrangeUser()
                 ssUser.uid = uid
                 ssUser.access_count = 1
+<<<<<<< HEAD
                 ssUser.objects.save()
+=======
+<<<<<<< HEAD
+                ssUser.objects.save()
+=======
+                ssUser.save()
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
                 sUser.append(ssUser)
             return sUser[0]
 

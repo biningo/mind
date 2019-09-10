@@ -64,8 +64,19 @@
 
   <div style="">
  {% for k in timeArticle_map %}
+<<<<<<< HEAD
 <a style="margin-left: 30px;margin-top:10px;font-size: 20px;text-decoration: underline" href="/article/detail/{{ k|slice:"4" }}/{{ k|slice:"5:7"}}/0/">{{ k }}({{ k.0 }}篇)</a>
             {% endfor %}
+=======
+<<<<<<< HEAD
+<a style="margin-left: 30px;margin-top:10px;font-size: 20px;text-decoration: underline" href="/article/detail/{{ k|slice:"4" }}/{{ k|slice:"5:7"}}/0/">{{ k }}({{ k.0 }}篇)</a>
+            {% endfor %}
+=======
+             <a style="text-decoration: underline" href="/article/detail/{{k.year}}/{{ k.month}}/0/">{{k.year}}-{{k.month}} ({{k.count}}篇)</a>
+ 
+{% endfor %}
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
   </div>
 
      </div>
@@ -229,4 +240,12 @@ function Captcha(id) {
 }
 
 </script><!--用户登录-->
+<<<<<<< HEAD
 {% endblock %}
+=======
+<<<<<<< HEAD
+{% endblock %}
+=======
+{% endblock %}
+>>>>>>> '解决用户登录和前端样式调整'
+>>>>>>> '解决用户登录和前端样式调整'
